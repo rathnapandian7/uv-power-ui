@@ -118,10 +118,31 @@
     width: 44px;
     height: 44px;
     font-size: 1rem;
+    min-height: 44px;
+    min-width: 44px;
   }
 
   .back-icon,
   .top-icon {
     font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .floating-buttons {
+    right: 0.6rem;
+    bottom: 0.6rem;
+    gap: 0.5rem;
+  }
+
+  .floating-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+
+  .back-icon,
+  .top-icon {
+    font-size: 1.1rem;
   }
 }

@@ -116,6 +116,9 @@
   .modal {
     width: 95% !important;
     max-width: none !important;
+    padding: 1.5rem !important;
+    max-height: 90vh;
+    border-radius: 16px;
   }
 
   .modal-title {
@@ -126,5 +129,38 @@
     width: 36px;
     height: 36px;
     font-size: 1.25rem;
+  }
+
+  .modal-content {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    width: 98% !important;
+    max-width: none !important;
+    padding: 1rem !important;
+    border-radius: 12px;
+    max-height: 95vh;
+  }
+
+  .modal-header {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .modal-title {
+    font-size: 1.1rem;
+  }
+
+  .modal-close-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+  }
+
+  .modal-content {
+    font-size: 0.9rem;
   }
 }
