@@ -318,3 +318,234 @@ export const deleteCategory = async (id) => {
     throw error;
   }
 };
+// ──────────────────────────────────────────────────────────────────────────────
+// FILTER APIS
+// ──────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Fetch products filtered by category
+ * @param {String} categoryName - Category name to filter by
+ * @returns {Promise<Array>} Array of products in that category
+ */
+export const getProductsByCategory = async (categoryName) => {
+  try {
+    // First fetch all products
+    const allProducts = await fetchAllProducts();
+    
+    // Filter by category (case-insensitive)
+    const filteredProducts = allProducts.filter(
+      product => (product.category || "").toLowerCase() === categoryName.toLowerCase()
+    );
+    
+    console.log(`Products in category '${categoryName}':`, filteredProducts);
+    return filteredProducts;
+  } catch (error) {
+    console.error(`Error fetching products for category '${categoryName}':`, error);
+    throw error;
+  }
+};
+
+// ──────────────────────────────────────────────────────────────────────────────
+// CMS CONTENT APIS (Header, Hero, Footer)
+// ──────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Fetch Header configuration
+ * @returns {Promise<Object>} Header settings
+ */
+export const fetchHeaderConfig = async () => {
+  try {
+    const fullUrl = `${API_BASE_URL}/cms/header`;
+    console.log("Fetching header config from:", fullUrl);
+    
+    const response = await fetch(fullUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      // Fallback to localStorage
+      const localData = localStorage.getItem("uv-power-header");
+      if (localData) {
+        return JSON.parse(localData);
+      }
+      throw new Error(`Failed to fetch header: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Header config fetched successfully:", data);
+    return data;
+  } catch (error) {
+    console.warn("Error fetching header from API, using localStorage:", error);
+    // Fallback to localStorage
+    const localData = localStorage.getItem("uv-power-header");
+    return localData ? JSON.parse(localData) : null;
+  }
+};
+
+/**
+ * Fetch Hero section configuration
+ * @returns {Promise<Array>} Hero slides
+ */
+export const fetchHeroConfig = async () => {
+  try {
+    const fullUrl = `${API_BASE_URL}/cms/hero`;
+    console.log("Fetching hero config from:", fullUrl);
+    
+    const response = await fetch(fullUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      // Fallback to localStorage
+      const localData = localStorage.getItem("uv-power-hero");
+      if (localData) {
+        return JSON.parse(localData);
+      }
+      throw new Error(`Failed to fetch hero: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Hero config fetched successfully:", data);
+    return data;
+  } catch (error) {
+    console.warn("Error fetching hero from API, using localStorage:", error);
+    // Fallback to localStorage
+    const localData = localStorage.getItem("uv-power-hero");
+    return localData ? JSON.parse(localData) : [];
+  }
+};
+
+/**
+ * Fetch Footer configuration
+ * @returns {Promise<Object>} Footer settings
+ */
+export const fetchFooterConfig = async () => {
+  try {
+    const fullUrl = `${API_BASE_URL}/cms/footer`;
+    console.log("Fetching footer config from:", fullUrl);
+    
+    const response = await fetch(fullUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      // Fallback to localStorage
+      const localData = localStorage.getItem("uv-power-footer");
+      if (localData) {
+        return JSON.parse(localData);
+      }
+      throw new Error(`Failed to fetch footer: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Footer config fetched successfully:", data);
+    return data;
+  } catch (error) {
+    console.warn("Error fetching footer from API, using localStorage:", error);
+    // Fallback to localStorage
+    const localData = localStorage.getItem("uv-power-footer");
+    return localData ? JSON.parse(localData) : null;
+  }
+};
+
+/**
+ * Update Header configuration
+ * @param {Object} headerData - Header configuration
+ * @returns {Promise<Object>} Updated header
+ */
+export const updateHeaderConfig = async (headerData) => {
+  try {
+    const fullUrl = `${API_BASE_URL}/cms/header`;
+    console.log("Updating header config at:", fullUrl);
+
+    const response = await fetch(fullUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(headerData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update header: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Header updated successfully:", data);
+    return data;
+  } catch (error) {
+    console.error("Error updating header:", error);
+    throw error;
+  }
+};
+
+/**
+ * Update Hero section configuration
+ * @param {Array} heroData - Hero slides array
+ * @returns {Promise<Array>} Updated hero slides
+ */
+export const updateHeroConfig = async (heroData) => {
+  try {
+    const fullUrl = `${API_BASE_URL}/cms/hero`;
+    console.log("Updating hero config at:", fullUrl);
+
+    const response = await fetch(fullUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(heroData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update hero: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Hero updated successfully:", data);
+    return data;
+  } catch (error) {
+    console.error("Error updating hero:", error);
+    throw error;
+  }
+};
+
+/**
+ * Update Footer configuration
+ * @param {Object} footerData - Footer configuration
+ * @returns {Promise<Object>} Updated footer
+ */
+export const updateFooterConfig = async (footerData) => {
+  try {
+    const fullUrl = `${API_BASE_URL}/cms/footer`;
+    console.log("Updating footer config at:", fullUrl);
+
+    const response = await fetch(fullUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(footerData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to update footer: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Footer updated successfully:", data);
+    return data;
+  } catch (error) {
+    console.error("Error updating footer:", error);
+    throw error;
+  }
+};

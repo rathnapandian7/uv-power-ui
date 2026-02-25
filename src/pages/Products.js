@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
+import ProductQuickView from "../components/ProductQuickView";
 import * as api from "../services/api";
 import "./Products.css";
 
@@ -20,10 +22,11 @@ const DEFAULT_PRODUCTS = [
 
 const Products = () => {
   const [products, setProducts] = useState([]);
-  // const [filter, setFilter] = useState("all");
   const [sortBy, setSortBy] = useState("popular");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const { addToCart } = useContext(CartContext);
 
   // Load products from Spring Boot backend on mount
   useEffect(() => {
@@ -49,12 +52,12 @@ const Products = () => {
 
   const sortedProducts = [...filteredProducts].sort((a, b) => {
     if (sortBy === "price-low") {
-      const priceA = parseInt(a.price.replace(/₹|,/g, ""));
-      const priceB = parseInt(b.price.replace(/₹|,/g, ""));
+      const priceA = typeof a.price === 'number' ? a.price : parseInt(a.price?.toString().replace(/₹|,/g, "") || 0);
+      const priceB = typeof b.price === 'number' ? b.price : parseInt(b.price?.toString().replace(/₹|,/g, "") || 0);
       return priceA - priceB;
     } else if (sortBy === "price-high") {
-      const priceA = parseInt(a.price.replace(/₹|,/g, ""));
-      const priceB = parseInt(b.price.replace(/₹|,/g, ""));
+      const priceA = typeof a.price === 'number' ? a.price : parseInt(a.price?.toString().replace(/₹|,/g, "") || 0);
+      const priceB = typeof b.price === 'number' ? b.price : parseInt(b.price?.toString().replace(/₹|,/g, "") || 0);
       return priceB - priceA;
     } else if (sortBy === "rating") {
       return b.rating - a.rating;
@@ -64,6 +67,41 @@ const Products = () => {
 
   const renderStars = (rating) => {
     return "⭐".repeat(Math.floor(rating));
+  };
+
+  const handleAddToCart = (product) => {
+    try {
+      const productToAdd = {
+        ...product,
+        quantity: 1,
+        cartItemId: `${product.id}-${Date.now()}`
+      };
+      
+      const success = addToCart(productToAdd);
+      if (success) {
+        alert(`${product.productName || product.name} added to cart!`);
+      }
+      setSelectedProduct(null);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
+  };
+
+  const handleBuy = (product) => {
+    try {
+      const productToAdd = {
+        ...product,
+        quantity: 1,
+        cartItemId: `${product.id}-${Date.now()}`
+      };
+      
+      addToCart(productToAdd);
+      alert(`${product.productName || product.name} added! Proceeding to checkout...`);
+      setSelectedProduct(null);
+      // Could redirect to checkout here if needed
+    } catch (error) {
+      console.error("Error processing order:", error);
+    }
   };
 
   return (
@@ -119,33 +157,40 @@ const Products = () => {
           <div className="products-grid">
             {sortedProducts.map((product) => (
               <div key={product.id} className="product-card-wrapper">
-                <Link to={product.link || "#"} className="product-card">
+                <div 
+                  className="product-card" 
+                  onClick={() => setSelectedProduct(product)}
+                  style={{ cursor: "pointer" }}
+                >
                   <div className="product-image-wrapper">
                     <img src={product.imageUrl || product.image} alt={product.productName || product.name} className="product-image" />
-                    <div className="product-badge">{product.badge}</div>
+                    {product.badge && <div className="product-badge">{product.badge}</div>}
                     <div className="product-overlay">
-                      <button className="view-btn">View Details</button>
+                      <button className="view-btn" onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedProduct(product);
+                      }}>View Details</button>
                     </div>
                   </div>
                   <div className="product-content">
                     <h3 className="product-name">{product.productName || product.name}</h3>
                     <p className="product-description">{product.description}</p>
                     <div className="product-rating">
-                      <span className="stars">{renderStars(product.rating)}</span>
-                      <span className="rating-value">{product.rating}</span>
-                      <span className="reviews">({product.reviews})</span>
+                      <span className="stars">{renderStars(product.rating || 0)}</span>
+                      <span className="rating-value">{product.rating || 0}</span>
+                      <span className="reviews">({product.reviews || 0})</span>
                     </div>
                     <div className="product-footer">
                       <span className="product-price">{product.price}</span>
                       <button className="add-btn" onClick={(e) => {
-                        e.preventDefault();
-                        alert(`${product.name} added to cart!`);
+                        e.stopPropagation();
+                        handleAddToCart(product);
                       }}>
                         + Add
                       </button>
                     </div>
                   </div>
-                </Link>
+                </div>
               </div>
             ))}
           </div>
@@ -194,6 +239,15 @@ const Products = () => {
           </Link>
         </div>
       </section>
+
+      {/* Product Quick View Modal */}
+      <ProductQuickView
+        product={selectedProduct}
+        isOpen={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        onAddToCart={handleAddToCart}
+        onBuy={handleBuy}
+      />
     </section>
   );
 }

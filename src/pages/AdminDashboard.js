@@ -224,6 +224,373 @@ const OffersTab = ({ offers, setOffers }) => {
   );
 };
 
+// ─── HEADER TAB ───────────────────────────────────────────────────────────────
+const HeaderTab = () => {
+  const [headerSettings, setHeaderSettings] = useState(() => {
+    try {
+      const saved = localStorage.getItem("uv-power-header");
+      return saved ? JSON.parse(saved) : {
+        logoText: "UV",
+        logoImage: null,
+        navigation: [
+          { id: 1, label: "Home", link: "/" },
+          { id: 2, label: "Products", link: "/products" },
+          { id: 3, label: "Shop", link: "/shop" },
+          { id: 4, label: "About", link: "/about" },
+          { id: 5, label: "Contact", link: "/contact" }
+        ]
+      };
+    } catch {
+      return {
+        logoText: "UV",
+        logoImage: null,
+        navigation: []
+      };
+    }
+  });
+
+  const handleSaveHeader = () => {
+    localStorage.setItem("uv-power-header", JSON.stringify(headerSettings));
+    alert("Header settings saved successfully!");
+    window.location.reload();
+  };
+
+  const addNavItem = () => {
+    const newItem = {
+      id: Math.max(0, ...headerSettings.navigation.map(n => n.id)) + 1,
+      label: "New Link",
+      link: "/"
+    };
+    setHeaderSettings({
+      ...headerSettings,
+      navigation: [...headerSettings.navigation, newItem]
+    });
+  };
+
+  const removeNavItem = (id) => {
+    setHeaderSettings({
+      ...headerSettings,
+      navigation: headerSettings.navigation.filter(n => n.id !== id)
+    });
+  };
+
+  const updateNavItem = (id, field, value) => {
+    setHeaderSettings({
+      ...headerSettings,
+      navigation: headerSettings.navigation.map(n =>
+        n.id === id ? { ...n, [field]: value } : n
+      )
+    });
+  };
+
+  return (
+    <div className="admin-tab">
+      <div className="tab-header">
+        <h2>📝 Header Settings</h2>
+      </div>
+
+      <div className="settings-form">
+        <div className="form-section">
+          <h3>Logo</h3>
+          <div className="form-group">
+            <label>Logo Text</label>
+            <input
+              type="text"
+              value={headerSettings.logoText}
+              onChange={(e) => setHeaderSettings({
+                ...headerSettings,
+                logoText: e.target.value.substring(0, 10)
+              })}
+              className="form-input"
+              maxLength="10"
+            />
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h3>Navigation Items</h3>
+          <div className="nav-items-list">
+            {headerSettings.navigation.map((item) => (
+              <div key={item.id} className="nav-item-row">
+                <input
+                  type="text"
+                  placeholder="Label"
+                  value={item.label}
+                  onChange={(e) => updateNavItem(item.id, 'label', e.target.value)}
+                  className="form-input"
+                />
+                <input
+                  type="text"
+                  placeholder="Link"
+                  value={item.link}
+                  onChange={(e) => updateNavItem(item.id, 'link', e.target.value)}
+                  className="form-input"
+                />
+                <button
+                  onClick={() => removeNavItem(item.id)}
+                  className="btn btn-danger btn-sm"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+          <button onClick={addNavItem} className="btn btn-secondary" style={{ marginTop: "10px" }}>
+            + Add Navigation Item
+          </button>
+        </div>
+
+        <button onClick={handleSaveHeader} className="btn btn-primary" style={{ marginTop: "20px" }}>
+          Save Header Settings
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// ─── HERO TAB ─────────────────────────────────────────────────────────────────
+const HeroTab = () => {
+  const [heroSlides, setHeroSlides] = useState(() => {
+    try {
+      const saved = localStorage.getItem("uv-power-hero");
+      return saved ? JSON.parse(saved) : [
+        { id: 1, title: "Premium Vinyl Stickers", subtitle: "Transform Your Ride Today", image: "" },
+        { id: 2, title: "LED Name Boards", subtitle: "Illuminate Your Style", image: "" },
+        { id: 3, title: "Laser Engraved Products", subtitle: "Precision Craftsmanship", image: "" }
+      ];
+    } catch {
+      return [];
+    }
+  });
+
+  const handleSaveHero = () => {
+    localStorage.setItem("uv-power-hero", JSON.stringify(heroSlides));
+    alert("Hero section updated successfully!");
+    window.location.reload();
+  };
+
+  const addSlide = () => {
+    const newSlide = {
+      id: Math.max(0, ...heroSlides.map(s => s.id)) + 1,
+      title: "New Slide",
+      subtitle: "Your subtitle here",
+      image: ""
+    };
+    setHeroSlides([...heroSlides, newSlide]);
+  };
+
+  const removeSlide = (id) => {
+    setHeroSlides(heroSlides.filter(s => s.id !== id));
+  };
+
+  const updateSlide = (id, field, value) => {
+    setHeroSlides(heroSlides.map(s =>
+      s.id === id ? { ...s, [field]: value } : s
+    ));
+  };
+
+  return (
+    <div className="admin-tab">
+      <div className="tab-header">
+        <h2>🖼️ Hero Section Slides</h2>
+      </div>
+
+      <div className="settings-form">
+        <div className="components-grid">
+          {heroSlides.map((slide) => (
+            <div key={slide.id} className="component-card">
+              <div className="component-preview">
+                {slide.image && <img src={slide.image} alt={slide.title} style={{ width: "100%", height: "150px", objectFit: "cover" }} />}
+              </div>
+              <div className="component-fields">
+                <input
+                  type="text"
+                  placeholder="Slide Title"
+                  value={slide.title}
+                  onChange={(e) => updateSlide(slide.id, 'title', e.target.value)}
+                  className="form-input"
+                />
+                <input
+                  type="text"
+                  placeholder="Slide Subtitle"
+                  value={slide.subtitle}
+                  onChange={(e) => updateSlide(slide.id, 'subtitle', e.target.value)}
+                  className="form-input"
+                />
+                <input
+                  type="text"
+                  placeholder="Image URL"
+                  value={slide.image}
+                  onChange={(e) => updateSlide(slide.id, 'image', e.target.value)}
+                  className="form-input"
+                />
+                <button
+                  onClick={() => removeSlide(slide.id)}
+                  className="btn btn-danger btn-sm"
+                >
+                  Remove Slide
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <button onClick={addSlide} className="btn btn-secondary" style={{ marginTop: "20px" }}>
+          + Add New Slide
+        </button>
+
+        <button onClick={handleSaveHero} className="btn btn-primary" style={{ marginTop: "20px" }}>
+          Save Hero Section
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// ─── FOOTER TAB ───────────────────────────────────────────────────────────────
+const FooterTab = () => {
+  const [footerSettings, setFooterSettings] = useState(() => {
+    try {
+      const saved = localStorage.getItem("uv-power-footer");
+      return saved ? JSON.parse(saved) : {
+        company: "UV Power",
+        description: "Your brand description here",
+        address: "123 Main Street, City, State 12345",
+        phone: "+91-XXXXXXXXXX",
+        email: "info@example.com",
+        socialLinks: [
+          { id: 1, platform: "Facebook", url: "" },
+          { id: 2, platform: "Instagram", url: "" },
+          { id: 3, platform: "Twitter", url: "" },
+          { id: 4, platform: "LinkedIn", url: "" }
+        ]
+      };
+    } catch {
+      return {
+        company: "",
+        description: "",
+        address: "",
+        phone: "",
+        email: "",
+        socialLinks: []
+      };
+    }
+  });
+
+  const handleSaveFooter = () => {
+    localStorage.setItem("uv-power-footer", JSON.stringify(footerSettings));
+    alert("Footer settings saved successfully!");
+    window.location.reload();
+  };
+
+  const updateSocialLink = (id, url) => {
+    setFooterSettings({
+      ...footerSettings,
+      socialLinks: footerSettings.socialLinks.map(link =>
+        link.id === id ? { ...link, url } : link
+      )
+    });
+  };
+
+  return (
+    <div className="admin-tab">
+      <div className="tab-header">
+        <h2>🔗 Footer Settings</h2>
+      </div>
+
+      <div className="settings-form">
+        <div className="form-section">
+          <h3>Company Information</h3>
+          <div className="form-group">
+            <label>Company Name</label>
+            <input
+              type="text"
+              value={footerSettings.company}
+              onChange={(e) => setFooterSettings({
+                ...footerSettings,
+                company: e.target.value
+              })}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label>Description</label>
+            <textarea
+              value={footerSettings.description}
+              onChange={(e) => setFooterSettings({
+                ...footerSettings,
+                description: e.target.value
+              })}
+              className="form-input"
+              rows="3"
+            />
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h3>Contact Information</h3>
+          <div className="form-group">
+            <label>Address</label>
+            <input
+              type="text"
+              value={footerSettings.address}
+              onChange={(e) => setFooterSettings({
+                ...footerSettings,
+                address: e.target.value
+              })}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label>Phone</label>
+            <input
+              type="text"
+              value={footerSettings.phone}
+              onChange={(e) => setFooterSettings({
+                ...footerSettings,
+                phone: e.target.value
+              })}
+              className="form-input"
+            />
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              value={footerSettings.email}
+              onChange={(e) => setFooterSettings({
+                ...footerSettings,
+                email: e.target.value
+              })}
+              className="form-input"
+            />
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h3>Social Links</h3>
+          {footerSettings.socialLinks.map((link) => (
+            <div key={link.id} className="form-group">
+              <label>{link.platform}</label>
+              <input
+                type="url"
+                placeholder={`Your ${link.platform} URL`}
+                value={link.url}
+                onChange={(e) => updateSocialLink(link.id, e.target.value)}
+                className="form-input"
+              />
+            </div>
+          ))}
+        </div>
+
+        <button onClick={handleSaveFooter} className="btn btn-primary" style={{ marginTop: "20px" }}>
+          Save Footer Settings
+        </button>
+      </div>
+    </div>
+  );
+};
+
 // ─── BOOKINGS TAB ─────────────────────────────────────────────────────────────
 const BookingsTab = () => {
   const [bookings] = useState([
@@ -1719,6 +2086,9 @@ const AdminDashboard = () => {
       badge: categories.length,
     },
     { id: "offers", icon: "🎉", label: "Offers", badge: offers.length },
+    { id: "header", icon: "📝", label: "Header" },
+    { id: "hero", icon: "🖼️", label: "Hero Section" },
+    { id: "footer", icon: "🔗", label: "Footer" },
     { id: "bookings", icon: "📅", label: "Bookings" },
     { id: "enquiries", icon: "💬", label: "Enquiries" },
     { id: "pricing", icon: "🏠", label: "Settings" },
@@ -1730,6 +2100,9 @@ const AdminDashboard = () => {
     products: "Products",
     categories: "Categories",
     offers: "Offers",
+    header: "Edit Header",
+    hero: "Edit Hero Section",
+    footer: "Edit Footer",
     bookings: "Bookings",
     enquiries: "Enquiries",
     pricing: "Settings",
@@ -1824,6 +2197,9 @@ const AdminDashboard = () => {
           {activeTab === "offers" && (
             <OffersTab offers={offers} setOffers={setOffers} />
           )}
+          {activeTab === "header" && <HeaderTab />}
+          {activeTab === "hero" && <HeroTab />}
+          {activeTab === "footer" && <FooterTab />}
           {activeTab === "bookings" && <BookingsTab />}
           {activeTab === "enquiries" && <EnquiriesTab />}
           {activeTab === "pricing" && <SettingsTab />}
@@ -1832,6 +2208,9 @@ const AdminDashboard = () => {
             activeTab !== "products" &&
             activeTab !== "categories" &&
             activeTab !== "offers" &&
+            activeTab !== "header" &&
+            activeTab !== "hero" &&
+            activeTab !== "footer" &&
             activeTab !== "bookings" &&
             activeTab !== "enquiries" &&
             activeTab !== "pricing" &&

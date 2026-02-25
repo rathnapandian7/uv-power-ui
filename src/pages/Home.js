@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { AdminContext } from '../context/AdminContext';
+import { CartContext } from '../context/CartContext';
 import * as api from '../services/api';
 import ProcessFlow from '../components/ProcessFlow';
 import PowerYourIdentity from '../components/PowerYourIdentity';
@@ -19,6 +20,7 @@ const Home = () => {
   const [productsData, setProductsData] = useState([]);
   const [loadingData, setLoadingData] = useState(true);
   const { isLoggedIn, adminData } = useContext(AdminContext);
+  const { addToCart } = useContext(CartContext);
 
   // Fetch categories and products from backend
   useEffect(() => {
@@ -235,12 +237,21 @@ const Home = () => {
   };
 
   const handleAddToCart = (product) => {
-    const cart = JSON.parse(localStorage.getItem('uv-power-cart')) || [];
-    cart.push(product);
-    localStorage.setItem('uv-power-cart', JSON.stringify(cart));
-    window.dispatchEvent(new Event('cartUpdated'));
-    alert(`${product.name} added to cart!`);
-    setShowProductModal(false);
+    try {
+      const productToAdd = {
+        ...product,
+        quantity: 1,
+        cartItemId: `${product.id}-${Date.now()}`
+      };
+      
+      const success = addToCart(productToAdd);
+      if (success) {
+        alert(`${product.productName || product.name} added to cart!`);
+      }
+      setShowProductModal(false);
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+    }
   };
 
   return (
@@ -314,8 +325,8 @@ const Home = () => {
           <h1 className="hero-title">{heroSlides[currentSlide].title}</h1>
           <p className="hero-subtitle">{heroSlides[currentSlide].subtitle}</p>
           <div className="hero-buttons">
-            <Link to="/products" className="btn btn-primary glow-btn">
-              Shop Now
+            <Link to="/shop" className="btn btn-primary glow-btn">
+              🛍️ Shop Collection
             </Link>
             <Link to="/custom-design" className="btn btn-secondary glow-btn">
               Get Custom Design

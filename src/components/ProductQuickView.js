@@ -67,6 +67,14 @@ const ProductQuickView = ({ product, isOpen, onClose, onAddToCart, onBuy }) => {
               <span className="price-value">{product.price}</span>
             </div>
 
+            {/* Category */}
+            {(product.category || product.categoryName) && (
+              <div className="qv-category">
+                <span className="category-label">Category:</span>
+                <span className="category-value">{product.category || product.categoryName}</span>
+              </div>
+            )}
+
             {/* Description */}
             <p className="qv-description">{product.description}</p>
 

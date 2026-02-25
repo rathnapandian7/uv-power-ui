@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AdminContext } from "../context/AdminContext";
+import { CartContext } from "../context/CartContext";
 import "./Header.css";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
   const [showLogoModal, setShowLogoModal] = useState(false);
   const [logoText, setLogoText] = useState('UV');
   const [logoImage, setLogoImage] = useState(null);
   const fileInputRef = useRef(null);
   const { isLoggedIn, adminData } = useContext(AdminContext);
+  const { cartCount } = useContext(CartContext);
   const location = useLocation();
 
   const closeMenu = () => setMenuOpen(false);
@@ -23,22 +24,6 @@ const Header = () => {
       setLogoText(logo.text || 'UV');
       setLogoImage(logo.image || null);
     }
-
-    const updateCartCount = () => {
-      const savedCart = localStorage.getItem("uv-power-cart");
-      const cart = savedCart ? JSON.parse(savedCart) : [];
-      setCartCount(cart.length);
-    };
-
-    updateCartCount();
-    
-    window.addEventListener("storage", updateCartCount);
-    window.addEventListener("cartUpdated", updateCartCount);
-
-    return () => {
-      window.removeEventListener("storage", updateCartCount);
-      window.removeEventListener("cartUpdated", updateCartCount);
-    };
   }, []);
 
   // Handle image upload

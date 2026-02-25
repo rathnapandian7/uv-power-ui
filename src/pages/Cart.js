@@ -1,66 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "../context/CartContext";
 import "./Cart.css";
 
 const Cart = () => {
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState([]);
+  const { cart, removeFromCart, updateQuantity } = useContext(CartContext);
   const [notification, setNotification] = useState("");
 
-  // Load cart from localStorage on mount
-  useEffect(() => {
-    loadCart();
-    window.addEventListener("storage", loadCart);
-    return () => window.removeEventListener("storage", loadCart);
-  }, []);
-
-  const loadCart = () => {
-    try {
-      const cart = JSON.parse(localStorage.getItem("uv-power-cart")) || [];
-      setCartItems(cart);
-    } catch (error) {
-      console.error("Error loading cart:", error);
-    }
-  };
-
-  const updateQuantity = (index, newQuantity) => {
-    if (newQuantity <= 0) {
-      removeItem(index);
-      return;
-    }
-    
-    const updatedCart = [...cartItems];
-    updatedCart[index].quantity = newQuantity;
-    setCartItems(updatedCart);
-    localStorage.setItem("uv-power-cart", JSON.stringify(updatedCart));
-    window.dispatchEvent(new Event("cartUpdated"));
-  };
-
-  const removeItem = (index) => {
-    const updatedCart = cartItems.filter((_, i) => i !== index);
-    setCartItems(updatedCart);
-    localStorage.setItem("uv-power-cart", JSON.stringify(updatedCart));
-    window.dispatchEvent(new Event("cartUpdated"));
+  const handleRemoveItem = (cartItemId) => {
+    removeFromCart(cartItemId);
     setNotification("Item removed from cart");
     setTimeout(() => setNotification(""), 3000);
   };
 
+  const handleUpdateQuantity = (cartItemId, newQuantity) => {
+    updateQuantity(cartItemId, newQuantity);
+  };
+
   const calculateTotal = () => {
-    return cartItems.reduce((total, item) => {
-      const price = parseInt(item.price?.replace(/[^0-9]/g, "") || 0);
-      return total + (price * item.quantity);
+    return cart.reduce((total, item) => {
+      const priceValue = typeof item.price === 'number' ? item.price : parseInt(item.price?.toString().replace(/[^0-9]/g, "") || 0);
+      return total + (priceValue * (item.quantity || 1));
     }, 0);
   };
 
   const calculateSubtotal = () => {
-    return cartItems.reduce((total, item) => {
-      const price = parseInt(item.price?.replace(/[^0-9]/g, "") || 0);
-      return total + (price * item.quantity);
-    }, 0);
+    return calculateTotal();
   };
 
   const handleCheckout = () => {
-    if (cartItems.length === 0) {
+    if (cart.length === 0) {
       setNotification("Your cart is empty!");
       return;
     }
@@ -84,13 +54,13 @@ const Cart = () => {
         <div className="cart-header">
           <h1 className="cart-title">🛒 Shopping Cart</h1>
           <p className="cart-subtitle">
-            {cartItems.length === 0
+            {cart.length === 0
               ? "Your cart is empty"
-              : `${cartItems.length} item${cartItems.length !== 1 ? "s" : ""} in cart`}
+              : `${cart.length} item${cart.length !== 1 ? "s" : ""} in cart`}
           </p>
         </div>
 
-        {cartItems.length === 0 ? (
+        {cart.length === 0 ? (
           <div className="empty-cart">
             <div className="empty-cart-icon">🛍️</div>
             <h2>Your cart is empty</h2>
@@ -104,8 +74,8 @@ const Cart = () => {
             {/* Cart Items */}
             <div className="cart-items-section">
               <div className="cart-items">
-                {cartItems.map((item, index) => (
-                  <div key={index} className="cart-item">
+                {cart.map((item) => (
+                  <div key={item.cartItemId} className="cart-item">
                     {/* Product Image */}
                     <div className="cart-item-image">
                       <img src={item.imageUrl || item.image} alt={item.productName || item.name} />
@@ -113,18 +83,24 @@ const Cart = () => {
 
                     {/* Product Details */}
                     <div className="cart-item-details">
-                      <h3 className="cart-item-name">{item.name}</h3>
+                      <h3 className="cart-item-name">{item.productName || item.name}</h3>
                       <p className="cart-item-description">{item.description}</p>
 
                       {/* Customization Info */}
-                      <div className="cart-item-customization">
-                        <span className="custom-badge color-badge">
-                          Color: <strong>{item.color}</strong>
-                        </span>
-                        <span className="custom-badge size-badge">
-                          Size: <strong>{item.size}</strong>
-                        </span>
-                      </div>
+                      {(item.color || item.size) && (
+                        <div className="cart-item-customization">
+                          {item.color && (
+                            <span className="custom-badge color-badge">
+                              Color: <strong>{item.color}</strong>
+                            </span>
+                          )}
+                          {item.size && (
+                            <span className="custom-badge size-badge">
+                              Size: <strong>{item.size}</strong>
+                            </span>
+                          )}
+                        </div>
+                      )}
                     </div>
 
                     {/* Quantity and Price */}
@@ -132,15 +108,15 @@ const Cart = () => {
                       <div className="quantity-control">
                         <button
                           className="qty-btn"
-                          onClick={() => updateQuantity(index, item.quantity - 1)}
+                          onClick={() => handleUpdateQuantity(item.cartItemId, (item.quantity || 1) - 1)}
                         >
                           −
                         </button>
                         <input
                           type="number"
-                          value={item.quantity}
+                          value={item.quantity || 1}
                           onChange={(e) =>
-                            updateQuantity(index, parseInt(e.target.value) || 1)
+                            handleUpdateQuantity(item.cartItemId, parseInt(e.target.value) || 1)
                           }
                           className="qty-input"
                           min="1"
@@ -148,25 +124,25 @@ const Cart = () => {
                         />
                         <button
                           className="qty-btn"
-                          onClick={() => updateQuantity(index, item.quantity + 1)}
+                          onClick={() => handleUpdateQuantity(item.cartItemId, (item.quantity || 1) + 1)}
                         >
                           +
                         </button>
                       </div>
 
                       <div className="cart-item-price">
-                        <span className="price-unit">{item.price}</span>
+                        <span className="price-unit">₹{item.price}</span>
                         <span className="price-total">
                           {(
-                            parseInt(item.price?.replace(/[^0-9]/g, "") || 0) *
-                            item.quantity
+                            (typeof item.price === 'number' ? item.price : parseInt(item.price?.toString().replace(/[^0-9]/g, "") || 0)) *
+                            (item.quantity || 1)
                           ).toLocaleString("en-IN")}
                         </span>
                       </div>
 
                       <button
                         className="remove-btn"
-                        onClick={() => removeItem(index)}
+                        onClick={() => handleRemoveItem(item.cartItemId)}
                         title="Remove item"
                       >
                         🗑️

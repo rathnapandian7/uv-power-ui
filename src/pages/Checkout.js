@@ -86,8 +86,8 @@ const Checkout = () => {
       shipping: formData,
       total: Math.round(
         cartItems.reduce((sum, item) => {
-          const price = parseInt(item.price?.replace(/[^0-9]/g, "") || 0);
-          return sum + price * item.quantity;
+          const priceValue = typeof item.price === 'number' ? item.price : parseInt(item.price?.toString().replace(/[^0-9]/g, "") || 0);
+          return sum + priceValue * item.quantity;
         }, 0) * 1.18
       ),
     };
@@ -161,8 +161,8 @@ const Checkout = () => {
   }
 
   const subtotal = cartItems.reduce((sum, item) => {
-    const price = parseInt(item.price?.replace(/[^0-9]/g, "") || 0);
-    return sum + price * item.quantity;
+    const priceValue = typeof item.price === 'number' ? item.price : parseInt(item.price?.toString().replace(/[^0-9]/g, "") || 0);
+    return sum + priceValue * item.quantity;
   }, 0);
 
   const tax = Math.round(subtotal * 0.18);
@@ -378,7 +378,7 @@ const Checkout = () => {
                   </div>
                   <span className="item-price">
                     ₹{(
-                      parseInt(item.price?.replace(/[^0-9]/g, "") || 0) *
+                      (typeof item.price === 'number' ? item.price : parseInt(item.price?.toString().replace(/[^0-9]/g, "") || 0)) *
                       item.quantity
                     ).toLocaleString("en-IN")}
                   </span>
