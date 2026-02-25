@@ -1,0 +1,159 @@
+.power-identity-section {
+  padding: 4rem 1rem;
+  background: linear-gradient(135deg, #fd5e53 0%, #a259c6 100%);
+  position: relative;
+  overflow: hidden;
+  min-height: 45vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.power-identity-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(255,255,255,0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.power-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 700px;
+  color: #fff;
+  animation: powerFadeIn 1s cubic-bezier(.77,0,.18,1);
+}
+
+@keyframes powerFadeIn {
+  from { opacity: 0; transform: translateY(40px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.power-title {
+  font-size: 2.8rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  letter-spacing: 1px;
+  text-shadow: 0 4px 24px rgba(34,34,59,0.2);
+}
+
+.power-subtitle {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-bottom: 2.5rem;
+  line-height: 1.8;
+  text-shadow: 0 2px 12px rgba(34,34,59,0.1);
+}
+
+.power-cta-btn {
+  background: #fff;
+  color: #fd5e53;
+  border: none;
+  padding: 1rem 3rem;
+  border-radius: 32px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+  letter-spacing: 0.5px;
+}
+
+.power-cta-btn:hover {
+  transform: scale(1.08) translateY(-2px);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.25);
+  background: #fffbe7;
+}
+
+.power-cta-btn:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 1024px) {
+  .power-identity-section {
+    padding: 3rem 1rem;
+    min-height: 40vh;
+  }
+  
+  .power-title {
+    font-size: 2.2rem;
+  }
+  
+  .power-subtitle {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .power-identity-section {
+    padding: 2.5rem 0.75rem;
+    min-height: 35vh;
+  }
+  
+  .power-title {
+    font-size: 1.8rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .power-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .power-cta-btn {
+    padding: 0.85rem 2rem;
+    font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .power-identity-section {
+    padding: 2rem 0.5rem;
+    min-height: 30vh;
+  }
+  
+  .power-title {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+  }
+  
+  .power-subtitle {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+  
+  .power-cta-btn {
+    padding: 0.8rem 1.8rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .power-identity-section {
+    padding: 1.5rem 0.4rem;
+    min-height: 28vh;
+  }
+  
+  .power-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.6rem;
+  }
+  
+  .power-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  .power-cta-btn {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+    min-height: 44px;
+  }
+}

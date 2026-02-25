@@ -1,0 +1,446 @@
+/* ==================== QUICK VIEW MODAL ==================== */
+.quick-view-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+  backdrop-filter: blur(3px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.quick-view-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, #0a0e27 0%, #0f1833 100%);
+  border: 1px solid rgba(0, 102, 255, 0.3);
+  border-radius: 20px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: 1000;
+  animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 25px 60px rgba(0, 102, 255, 0.3);
+  padding: 2rem;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -45%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.close-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 102, 255, 0.3);
+  color: #ffffff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.close-btn:hover {
+  background: rgba(0, 102, 255, 0.3);
+  border-color: rgba(0, 102, 255, 0.6);
+  transform: rotate(90deg);
+}
+
+/* ==================== QUICK VIEW CONTENT ==================== */
+.quick-view-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+/* Image Section */
+.qv-image-section {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qv-main-image {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 102, 255, 0.2);
+  background: linear-gradient(135deg, rgba(0, 102, 255, 0.1), rgba(168, 85, 247, 0.1));
+}
+
+.qv-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: linear-gradient(135deg, #0066ff, #a855f7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 0 15px rgba(0, 102, 255, 0.4);
+}
+
+/* Details Section */
+.qv-details-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: #ffffff;
+}
+
+.qv-title {
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin: 0;
+  color: #ffffff;
+}
+
+.qv-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.qv-stars {
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+}
+
+.qv-review {
+  color: #a0aec0;
+  font-size: 0.95rem;
+}
+
+.qv-price {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(0, 102, 255, 0.1);
+  border: 1px solid rgba(0, 102, 255, 0.2);
+  border-radius: 10px;
+}
+
+.price-label {
+  color: #a0aec0;
+  font-weight: 600;
+}
+
+.price-value {
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #fbbf24;
+}
+
+.qv-description {
+  color: #a0aec0;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Options */
+.qv-option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.qv-option-label {
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 0.95rem;
+}
+
+.color-options {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.color-btn {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 2px solid rgba(0, 102, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.color-btn:hover {
+  border-color: rgba(0, 102, 255, 0.8);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(0, 102, 255, 0.4);
+}
+
+.color-btn.active {
+  border-color: #fbbf24;
+  box-shadow: 0 0 20px rgba(251, 191, 36, 0.6);
+}
+
+.size-options {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.size-btn {
+  padding: 0.7rem 1.2rem;
+  background: rgba(0, 102, 255, 0.1);
+  border: 2px solid rgba(0, 102, 255, 0.3);
+  color: #ffffff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.size-btn:hover {
+  border-color: rgba(0, 102, 255, 0.8);
+  background: rgba(0, 102, 255, 0.2);
+}
+
+.size-btn.active {
+  background: linear-gradient(135deg, #0066ff, #0052cc);
+  border-color: #0066ff;
+  box-shadow: 0 0 15px rgba(0, 102, 255, 0.5);
+}
+
+.quantity-select {
+  padding: 0.7rem 1rem;
+  background: rgba(0, 102, 255, 0.1);
+  border: 2px solid rgba(0, 102, 255, 0.3);
+  color: #ffffff;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.quantity-select:hover,
+.quantity-select:focus {
+  border-color: rgba(0, 102, 255, 0.8);
+  background: rgba(0, 102, 255, 0.15);
+  outline: none;
+}
+
+.quantity-select option {
+  background: #1a0f2e;
+  color: #ffffff;
+}
+
+/* Buttons */
+.qv-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.qv-btn {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.btn-cart {
+  background: rgba(0, 102, 255, 0.2);
+  border: 2px solid rgba(0, 102, 255, 0.5);
+  color: #0066ff;
+}
+
+.btn-cart:hover {
+  background: rgba(0, 102, 255, 0.3);
+  border-color: rgba(0, 102, 255, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 102, 255, 0.3);
+}
+
+.btn-buy {
+  background: linear-gradient(135deg, #0066ff, #0052cc);
+  color: white;
+  box-shadow: 0 0 20px rgba(0, 102, 255, 0.4);
+}
+
+.btn-buy:hover {
+  background: linear-gradient(135deg, #0052cc, #003d99);
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 102, 255, 0.6);
+}
+
+/* Features */
+.qv-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 102, 255, 0.2);
+}
+
+.feature-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #a0aec0;
+  padding: 0.6rem;
+  background: rgba(0, 102, 255, 0.05);
+  border-radius: 6px;
+  border: 1px solid rgba(0, 102, 255, 0.1);
+}
+
+.feature-badge span {
+  font-size: 1rem;
+}
+
+/* ==================== RESPONSIVE DESIGN ==================== */
+@media (max-width: 768px) {
+  .quick-view-modal {
+    width: 95%;
+    max-width: none;
+    padding: 1.5rem;
+  }
+
+  .quick-view-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .qv-main-image {
+    height: 300px;
+  }
+
+  .qv-title {
+    font-size: 1.5rem;
+  }
+
+  .qv-buttons {
+    grid-column: 1 / -1;
+  }
+
+  .qv-features {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .quick-view-modal {
+    width: 98%;
+    padding: 1.2rem;
+    max-height: 95vh;
+  }
+
+  .close-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+  }
+
+  .qv-main-image {
+    height: 250px;
+  }
+
+  .qv-title {
+    font-size: 1.3rem;
+  }
+
+  .qv-price {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .price-value {
+    font-size: 1.5rem;
+  }
+
+  .color-options,
+  .size-options {
+    gap: 0.6rem;
+  }
+
+  .color-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .size-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .qv-btn {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .feature-badge {
+    font-size: 0.8rem;
+  }
+
+  .feature-badge span {
+    font-size: 0.9rem;
+  }
+}
+
+/* ==================== SCROLLBAR STYLING ==================== */
+.quick-view-modal::-webkit-scrollbar {
+  width: 8px;
+}
+
+.quick-view-modal::-webkit-scrollbar-track {
+  background: rgba(0, 102, 255, 0.05);
+  border-radius: 10px;
+}
+
+.quick-view-modal::-webkit-scrollbar-thumb {
+  background: rgba(0, 102, 255, 0.3);
+  border-radius: 10px;
+}
+
+.quick-view-modal::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 102, 255, 0.5);
+}

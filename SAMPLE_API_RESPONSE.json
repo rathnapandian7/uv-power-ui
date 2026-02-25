@@ -1,0 +1,87 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Classic Dragon Bike Sticker",
+      "price": 299,
+      "category": "Bike Vinyl Stickers",
+      "stock": 50,
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=400&q=80",
+      "description": "Premium dragon design vinyl sticker for bikes",
+      "rating": 4.8,
+      "reviews": 245,
+      "badge": "Best Seller"
+    },
+    {
+      "id": 2,
+      "name": "Matte Black Logo Decal",
+      "price": 399,
+      "category": "Car Stickers",
+      "stock": 75,
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=400&q=80",
+      "description": "Professional matte logo design for cars",
+      "rating": 4.9,
+      "reviews": 267,
+      "badge": "Best Seller"
+    },
+    {
+      "id": 3,
+      "name": "LED Name Board - Blue",
+      "price": 1299,
+      "category": "Acrylic LED Boards",
+      "stock": 20,
+      "status": "active",
+      "image": "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80",
+      "description": "Blue LED illuminated name board with premium acrylic",
+      "rating": 4.9,
+      "reviews": 312,
+      "badge": "Premium"
+    }
+  ],
+  "categories": [
+    {
+      "id": 1,
+      "name": "Bike Vinyl Stickers",
+      "icon": "🏍️",
+      "description": "Premium vinyl stickers for bikes with weather-resistant quality",
+      "link": "/bike-vinyl-stickers"
+    },
+    {
+      "id": 2,
+      "name": "Car Stickers",
+      "icon": "🚗",
+      "description": "Custom car decals with premium adhesive and durability",
+      "link": "/car-stickers"
+    },
+    {
+      "id": 3,
+      "name": "Acrylic LED Name Boards",
+      "icon": "💡",
+      "description": "Illuminated acrylic boards perfect for any space",
+      "link": "/acrylic-led-name-boards"
+    },
+    {
+      "id": 4,
+      "name": "Laser Engraved Wood",
+      "icon": "🪵",
+      "description": "Precision laser engraved wooden products and art",
+      "link": "/laser-engraved-wood-products"
+    },
+    {
+      "id": 5,
+      "name": "Customized Keychains",
+      "icon": "🔑",
+      "description": "Personalized keychains for gifts and collectibles",
+      "link": "/customized-keychains"
+    },
+    {
+      "id": 6,
+      "name": "Premium Number Plates",
+      "icon": "🏷️",
+      "description": "Custom vehicle number plates with premium quality",
+      "link": "/premium-number-plates"
+    }
+  ]
+}
