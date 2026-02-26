@@ -261,7 +261,7 @@ const Contact = () => {
         <h2 className="section-title">Find Us</h2>
         <div className="map-container">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.4576871899147!2d77.22860031531385!3d28.613939892413157!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd288cf5b5cf%3A0x6e6369782b9385cb!2sNew%20Delhi%2C%20Delhi!5e0!3m2!1sen!2sin!4v1234567890"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.4576871899147!2d77.22860031531385!3d28.613939892413157!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd288cf5b5cf%3A0x6e6369782b9385cb!2sNew%20Delhi%2C%20Delhi!5e0!3m2!1sen!2sin!4v1234567890https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3908.8890691914903!2d79.55227817481715!3d11.559809488640656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a54b7817e701adb%3A0xe32e52a7ef7aaa32!2sUV%20POWER%20Stickers!5e0!3m2!1sen!2sin!4v1772075316224!5m2!1sen!2sin"
             width="100%"
             height="450"
             style={{ border: 0, borderRadius: "12px" }}
