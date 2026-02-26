@@ -60,6 +60,8 @@ const Footer = () => {
             </ul>
           </div>
 
+          
+
           {/* Contact & Address */}
           <div className="footer-section contact-section">
             <h3 className="footer-heading">Contact Us</h3>
@@ -68,21 +70,21 @@ const Footer = () => {
                 <span className="contact-icon">📍</span>
                 <div>
                   <p className="contact-label">Address:</p>
-                  <p className="contact-text">UV Power Customization Hub<br />123 Creative Street<br />Innovation Park<br />City, State 12345</p>
+                  <p className="contact-text">UV Power Customization Hub<br />Panruti Main Roan, Next to VRK Steels<br/>Near Railyway Gate<br/>Vadalur, Cuddalore-607303, Tamil Nadu</p>
                 </div>
               </div>
               <div className="contact-item">
                 <span className="contact-icon">📞</span>
                 <div>
                   <p className="contact-label">Phone:</p>
-                  <p className="contact-text"><a href="tel:+918765432100">+91 (876) 543-2100</a></p>
+                  <p className="contact-text"><a href="tel:+918765432100">+91-897310-2521</a></p>
                 </div>
               </div>
               <div className="contact-item">
                 <span className="contact-icon">✉️</span>
                 <div>
                   <p className="contact-label">Email:</p>
-                  <p className="contact-text"><a href="mailto:hello@uvpower.com">hello@uvpower.com</a></p>
+                  <p className="contact-text"><a href="mailto:hello@uvpower.com">uvpower@gmail.com</a></p>
                 </div>
               </div>
               <div className="contact-item">

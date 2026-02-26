@@ -1,7 +1,7 @@
 // API service for Spring Boot backend communication
 // Configure the base URL according to your Spring Boot server
 
-const API_BASE_URL = process.env.REACT_APP_API_URL ||  "http://localhost:8080/api";
+const API_BASE_URL = process.env.REACT_APP_API_URL ||  "https://uv-power-api.onrender.com/api";
 
 // ──────────────────────────────────────────────────────────────────────────────
 // PRODUCT APIS
